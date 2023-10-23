@@ -1205,7 +1205,7 @@ COMMAND(clearscene, "");
 
 void savescene(const char *fname)
 {
-    if(!fname[0]) fname = "quicksave.txt";
+    if(!fname[0]) fname = "home/quicksave.txt";
     fname = path(fname, true);
     FILE *f = fopen(fname, "w");
     if(!f) { conoutf(CON_ERROR, "save failed"); return; }
@@ -1238,7 +1238,7 @@ COMMAND(savescene, "s");
 
 void loadscene(const char *fname)
 {
-    if(!fname[0]) fname = "quicksave.txt";
+    if(!fname[0]) fname = "home/quicksave.txt";
     fname = path(fname, true);
     FILE *f = fopen(fname, "r");
     if(!f) { conoutf(CON_ERROR, "load failed"); return; }
