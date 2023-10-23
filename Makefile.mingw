@@ -1,0 +1,23 @@
+CXX=i686-w64-mingw32-g++
+CXXOPTFLAGS= -O3 -fomit-frame-pointer
+INCLUDES= -I. -Iinclude
+CXXFLAGS= -Wall -fsigned-char $(CXXOPTFLAGS) $(INCLUDES)
+
+LIBS= -static-libgcc -static-libstdc++ -Lmingw -lmingw32 -lSDLmain -lSDL -mwindows -lopengl32
+OBJS= \
+	command.o \
+	console.o \
+	main.o \
+	font.o \
+	texture.o
+
+default: all
+
+all: ragdoll.exe
+
+clean:
+	-$(RM) $(OBJS) ragdoll.exe
+
+ragdoll.exe:	$(OBJS)
+	$(CXX) $(CXXFLAGS) -o ragdoll.exe $(OBJS) $(LIBS)
+
