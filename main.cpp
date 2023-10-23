@@ -181,7 +181,7 @@ struct Sphere
     float size;
     int avg;
     bool sticky, collided, eye;
- 
+
     Sphere(const Vec3 &pos, float size) : oldpos(pos), pos(pos), dragoffset(0, 0, 0), size(size), sticky(false), collided(false), eye(false)
     {
         loopk(3) saved[k] = pos;
@@ -228,7 +228,7 @@ struct DistConstraint : Constraint
     {
         conoutf("Distance %f between #%d and #%d", dist, sphere1, sphere2);
     }
-    
+
     void update()
     {
         dist = (spheres[sphere2].pos - spheres[sphere1].pos).magnitude();
@@ -269,7 +269,7 @@ struct DistConstraint : Constraint
     void save(FILE *f)
     {
         fprintf(f, "d %d %d %f\n", sphere1, sphere2, dist);
-    } 
+    }
 
     void writecfg(FILE *f)
     {
@@ -294,15 +294,15 @@ struct Tri
 {
     int sphere1, sphere2, sphere3;
 
-    Matrix3x3 orient;    
+    Matrix3x3 orient;
 
-    Tri(int s1, int s2, int s3) : sphere1(s1), sphere2(s2), sphere3(s3) 
+    Tri(int s1, int s2, int s3) : sphere1(s1), sphere2(s2), sphere3(s3)
     {
         calcorient();
     }
 
-    bool uses(int type, int idx) 
-    { 
+    bool uses(int type, int idx)
+    {
         return type==SEL_SPHERE && (idx==sphere1 || idx==sphere2 || idx==sphere3);
     }
 
@@ -375,8 +375,8 @@ struct RotConstraint : Constraint
         middle *= inv;
     }
 
-    bool uses(int type, int idx) 
-    { 
+    bool uses(int type, int idx)
+    {
         if(type==SEL_TRI && (idx==tri1 || idx==tri2)) return true;
         return tris[tri1].uses(type, idx) || tris[tri2].uses(type, idx);
     }
@@ -507,7 +507,7 @@ struct RotConstraint : Constraint
             glEnd();
             return;
         }
-       
+
         Vec3 axis1, axis2, ca, o1, o2;
         if(a2 >= 0)
         {
@@ -547,7 +547,7 @@ struct RotConstraint : Constraint
         loopi(4)
         {
             steprot1.rotate(maxangle*(i+1)/4.0f, axis1);
-            steprot2.rotate(maxangle*(i+1)/4.0f, axis2); 
+            steprot2.rotate(maxangle*(i+1)/4.0f, axis2);
             Vec3 n1f = steprot1.transform(o1 - ca) + ca,
                  n1b = steprot1.transposedtransform(o1 - ca) + ca,
                  n2f = steprot2.transposedtransform(o2 - ca) + ca,
@@ -585,7 +585,7 @@ struct RotConstraint : Constraint
             loopi(4)
             {
                 steprot1.rotate(maxangle*(i+1)/4.0f, axis1);
-                steprot2.rotate(maxangle*(i+1)/4.0f, axis2); 
+                steprot2.rotate(maxangle*(i+1)/4.0f, axis2);
                 Vec3 n1fl = steprot1.transform(o1f - p1c) + p1c,
                      n1bl = steprot1.transform(o1b - p1c) + p1c,
                      n1fr = steprot1.transposedtransform(o1f - p1c) + p1c,
@@ -632,16 +632,16 @@ struct RotConstraint : Constraint
 
     void save(FILE *f)
     {
-        fprintf(f, "r %d %d %f %f %f %f %f %f %f %f %f %f\n", 
-            tri1, tri2, maxangle, 
-            middle.a.x, middle.a.y, middle.a.z, 
-            middle.b.x, middle.b.y, middle.b.z, 
+        fprintf(f, "r %d %d %f %f %f %f %f %f %f %f %f %f\n",
+            tri1, tri2, maxangle,
+            middle.a.x, middle.a.y, middle.a.z,
+            middle.b.x, middle.b.y, middle.b.z,
             middle.c.x, middle.c.y, middle.c.z);
     }
 
     bool load(const char *buf)
     {
-        int num = sscanf(buf+1, " %d %d %f %f %f %f %f %f %f %f %f %f", 
+        int num = sscanf(buf+1, " %d %d %f %f %f %f %f %f %f %f %f %f",
             &tri1, &tri2, &maxangle,
             &middle.a.x, &middle.a.y, &middle.a.z,
             &middle.b.x, &middle.b.y, &middle.b.z,
@@ -681,8 +681,8 @@ struct Joint
         orient.identity();
     }
 
-    bool uses(int type, int idx) 
-    { 
+    bool uses(int type, int idx)
+    {
         if(type==SEL_TRI && idx==tri) return true;
         return tri>=0 && tris.inrange(tri) && tris[tri].uses(type, idx);
     }
@@ -732,7 +732,7 @@ struct Joint
             &tridiff.b.x, &tridiff.b.y, &tridiff.b.z, &tridiff.b.w,
             &tridiff.c.x, &tridiff.c.y, &tridiff.c.z, &tridiff.c.w);
         if(num>=16) return true;
-        tri = -1; 
+        tri = -1;
         loopk(3) spheres[k] = -1;
         return false;
     }
@@ -776,9 +776,9 @@ VAR(dbgselect, 0, 0, 1);
 
 void select()
 {
-    if(hovertype>=0 && (selected[hovertype].empty() || selected[hovertype].last()!=hoveridx)) 
+    if(hovertype>=0 && (selected[hovertype].empty() || selected[hovertype].last()!=hoveridx))
     {
-        static const char *names[MAXSEL] = { "sphere", "tri", "joint" }; 
+        static const char *names[MAXSEL] = { "sphere", "tri", "joint" };
         if(dbgselect) conoutf("select: %s %d", names[hovertype], hoveridx);
         selected[hovertype].add(hoveridx);
         if(dragging>=0 && hovertype==SEL_SPHERE) spheres[hoveridx].dragoffset = spheres[hoveridx].pos - spheres[dragging].pos;
@@ -790,7 +790,7 @@ void selectall(int *type)
 {
     switch(*type)
     {
-        case 0: selected[SEL_SPHERE].setsize(0); loopv(spheres) selected[SEL_SPHERE].add(i); break;  
+        case 0: selected[SEL_SPHERE].setsize(0); loopv(spheres) selected[SEL_SPHERE].add(i); break;
         case 1: selected[SEL_TRI].setsize(0); loopv(tris) selected[SEL_TRI].add(i); break;
         case 2: selected[SEL_JOINT].setsize(0); loopv(joints) selected[SEL_JOINT].add(i); break;
     }
@@ -806,7 +806,7 @@ COMMAND(cancelselect, "");
 void drag(int *isdown)
 {
     if(!*isdown) { dragging = -1; return; }
-    if(hovertype==SEL_SPHERE) 
+    if(hovertype==SEL_SPHERE)
     {
         dragging = hoveridx;
         dragdist = camera.origin.dist(spheres[hoveridx].pos)/camscale;
@@ -868,7 +868,7 @@ void delselect()
     loopk(3) selected[k].setsize(0);
 }
 COMMAND(delselect, "");
-    
+
 void stopspheres()
 {
     loopv(spheres)
@@ -882,7 +882,7 @@ void clearmodel()
 {
     mname[0] = '\0';
     mtris.setsize(0);
-    mverts.setsize(0); 
+    mverts.setsize(0);
     mscale = 1;
     moffset = 0;
     joints.setsize(0);
@@ -913,7 +913,7 @@ void setupmodel(const char *fname)
             if(!unused) printf("unused joints: %s", j.name);
             else printf(", %s", j.name);
             unused++;
-        } 
+        }
     }
     if(unused) putchar('\n');
     int hideused = 0;
@@ -925,7 +925,7 @@ void setupmodel(const char *fname)
             if(!hideused) printf("using hidden joints: %s", j.name);
             else printf(", %s", j.name);
             hideused++;
-        } 
+        }
     }
     if(hideused) putchar('\n');
 }
@@ -1003,7 +1003,7 @@ void loadmd5(const char *fname, float scale)
                 if(buf[0]=='}' || feof(f)) break;
                 if(sscanf(buf, " vert %d ( %f %f ) %d %d", &index, &v.u, &v.v, &v.start, &v.count)==5)
                 {
-                    if(index>=0) { while(!verts.inrange(index)) verts.add(v); verts[index] = v; } 
+                    if(index>=0) { while(!verts.inrange(index)) verts.add(v); verts[index] = v; }
                 }
                 else if(sscanf(buf, " tri %d %d %d %d", &index, &t.vert[0], &t.vert[1], &t.vert[2])==4)
                 {
@@ -1061,8 +1061,8 @@ void loadmd5(const char *fname, float scale)
 
                 if(v.count > 4 || total < 0.999f || total > 1.001f)
                     printf("vert %d: %d weights, %f sum\n", i, v.count, total);
-            } 
-        }                    
+            }
+        }
     }
     fclose(f);
     setupmodel(fname);
@@ -1101,7 +1101,7 @@ void loadiqm(const char *fname, float scale)
     lilswap((uint *)&buf[hdr.ofs_triangles], hdr.num_triangles*sizeof(iqmtriangle)/sizeof(uint));
     lilswap((uint *)&buf[hdr.ofs_meshes], hdr.num_meshes*sizeof(iqmmesh)/sizeof(uint));
     lilswap((uint *)&buf[hdr.ofs_joints], hdr.num_joints*sizeof(iqmjoint)/sizeof(uint));
-    
+
     const char *str = hdr.ofs_text ? (char *)&buf[hdr.ofs_text] : "";
     float *vpos = NULL;
     uchar *vindex = NULL, *vweight = NULL;
@@ -1134,7 +1134,7 @@ void loadiqm(const char *fname, float scale)
         //else printf("%s\n", str+j.name);
         joints.add(Joint(&str[j.name], i, j.parent, (j.parent >= 0 ? orients[j.parent].transform(pos) : pos) * mscale));
         orients.add(Matrix3x4(Matrix3x3(orient), pos));
-        if(j.parent >= 0) orients.last() = orients[j.parent] * orients.last(); 
+        if(j.parent >= 0) orients.last() = orients[j.parent] * orients.last();
         if(joints.last().pos.z < 1) moffset = max(moffset, 1 - joints.last().pos.z);
     }
 
@@ -1145,7 +1145,7 @@ void loadiqm(const char *fname, float scale)
         loopj(m.num_triangles)
         {
             MTri &t = mtris.add();
-            loopk(3) t.vert[k] = tdata[j + m.first_triangle].vertex[k] - m.first_vertex + mvoffset; 
+            loopk(3) t.vert[k] = tdata[j + m.first_triangle].vertex[k] - m.first_vertex + mvoffset;
         }
         loopj(m.num_vertexes)
         {
@@ -1153,10 +1153,10 @@ void loadiqm(const char *fname, float scale)
             mv.pos = Vec3(&vpos[3*(j + m.first_vertex)]);
             mv.pos.y = -mv.pos.y;
             mv.pos *= mscale;
-            loopk(4) 
-            { 
-                mv.joints[k] = vindex[4*(j + m.first_vertex) + k]; 
-                mv.weights[k] = vweight[4*(j + m.first_vertex) + k]/255.0f; 
+            loopk(4)
+            {
+                mv.joints[k] = vindex[4*(j + m.first_vertex) + k];
+                mv.weights[k] = vweight[4*(j + m.first_vertex) + k]/255.0f;
                 if(mv.weights[k] && joints.inrange(mv.joints[k])) joints[mv.joints[k]].used = true;
             }
             if(mv.pos.z < 1) moffset = max(moffset, 1 - mv.pos.z);
@@ -1164,9 +1164,9 @@ void loadiqm(const char *fname, float scale)
     }
     loopv(mverts) mverts[i].pos.z += moffset;
     loopv(joints) joints[i].pos.z += moffset;
-   
+
     setupmodel(fname);
- 
+
     }
 
     return;
@@ -1210,7 +1210,7 @@ void savescene(const char *fname)
     FILE *f = fopen(fname, "w");
     if(!f) { conoutf(CON_ERROR, "save failed"); return; }
     fprintf(f, "c %f %f %f %f %f\n", camera.origin.x, camera.origin.y, camera.origin.z, camera.yaw, camera.pitch);
-    loopv(spheres) 
+    loopv(spheres)
     {
         Sphere &s = spheres[i];
         fprintf(f, "s %f %f %f %f %d", s.pos.x, s.pos.y, s.pos.z, max(s.size, 1.0f), s.sticky ? 1 : 0);
@@ -1226,9 +1226,9 @@ void savescene(const char *fname)
         fprintf(f, "t %d %d %d\n", t.sphere1, t.sphere2, t.sphere3);
     }
     loopv(constraints) constraints[i]->save(f);
-    if(mname[0]) 
+    if(mname[0])
     {
-        fprintf(f, "m %f %s\n", mscale, mname); 
+        fprintf(f, "m %f %s\n", mscale, mname);
         loopv(joints) joints[i].save(f);
     }
     fclose(f);
@@ -1328,7 +1328,7 @@ void loadscene(const char *fname)
 COMMAND(loadscene, "s");
 
 VARF(cursormode, 0, 1, 1,
-    if(cursormode) 
+    if(cursormode)
     {
         camera.yaw = floor((camera.yaw + 45)/90.0f)*90;
         camera.pitch = floor((camera.pitch + 45)/90.0f)*90;
@@ -1367,7 +1367,7 @@ COMMAND(unhidejoints, "");
 void addsphere(int *dir, float *dist)
 {
     Vec3 pos = campos + camdir*spawndist*camscale;
-    if(hovertype==SEL_JOINT) 
+    if(hovertype==SEL_JOINT)
     {
         Joint &j = joints[hoveridx];
         pos = j.getpos();
@@ -1446,8 +1446,8 @@ void rotspheres(float *angle, int *dir, int *numcenter)
         case 1: axis = Vec3(radians(yaw+90), 0); break;
         case 2: axis = Vec3(radians(yaw), radians(pitch)); break;
         case 3: axis = Vec3(radians(yaw), radians(pitch+90)); break;
-        case 4: 
-            if(selected[SEL_SPHERE].size() >= 2) axis = (spheres[selected[SEL_SPHERE][1]].pos -  spheres[selected[SEL_SPHERE][0]].pos).normalize(); 
+        case 4:
+            if(selected[SEL_SPHERE].size() >= 2) axis = (spheres[selected[SEL_SPHERE][1]].pos -  spheres[selected[SEL_SPHERE][0]].pos).normalize();
             if(*numcenter<=0) center = (spheres[selected[SEL_SPHERE][0]].pos +  spheres[selected[SEL_SPHERE][1]].pos) / 2;
             break;
     }
@@ -1476,7 +1476,7 @@ void setsize(float *size)
     selected[SEL_SPHERE].setsize(0);
 }
 COMMAND(setsize, "f");
-        
+
 void stepanim()
 {
     stepping = true;
@@ -1521,7 +1521,7 @@ COMMAND(constraindist, "");
 
 void updatedist()
 {
-    loopv(constraints) 
+    loopv(constraints)
     {
         DistConstraint *d = dynamic_cast<DistConstraint *>(constraints[i]);
         if(d) d->update();
@@ -1693,7 +1693,7 @@ void writecfg(const char *name)
     name = path(name, true);
     FILE *f = fopen(name, "w");
     if(!f) { conoutf(CON_ERROR, "failed writing %s", name); return; }
-    loopv(spheres) 
+    loopv(spheres)
     {
         Vec3 pos = spheres[i].pos;
         pos.z -= moffset;
@@ -1725,12 +1725,12 @@ void mousemove(int x, int y)
 {
     if(cursormode)
     {
-        float sens = cursorsensitivity/500.0f;    
+        float sens = cursorsensitivity/500.0f;
         curx = clamp(curx + x*sens*screen->h/float(screen->w), 0.0f, 1.0f);
         cury = clamp(cury - y*sens, 0.0f, 1.0f);
         return;
-    } 
-    float sens = sensitivity/33.0f; 
+    }
+    float sens = sensitivity/33.0f;
     camera.yaw += x*sens;
     camera.pitch -= y*sens;
     if(y > 0) camera.pitch = min(camera.pitch, 90.0f);
@@ -1842,7 +1842,7 @@ bool movecam(const Vec3 &vel)
     return true;
 }
 
-FVAR(grav, -1000, -50, 1000); 
+FVAR(grav, -1000, -50, 1000);
 FVAR(airfric, 0, 0.99f, 1);
 FVAR(groundfric, 0, 0.7f, 1);
 FVAR(velcut, 0, 1e-5f, 1);
@@ -1901,7 +1901,7 @@ void drawconsole()
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(0, w*3, h*3, 0, -1, 1);
-  
+
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
@@ -1914,7 +1914,7 @@ void drawconsole()
     glDisable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
-    
+
 }
 
 FVAR(movespeed, 0, 5, 1000);
@@ -1926,7 +1926,7 @@ void enabledepthoffset()
     GLMatrixf offsetmatrix;
     offsetmatrix.projectionmatrix();
     offsetmatrix.v[14] += depthoffset * offsetmatrix.v[10];
-    
+
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
     glLoadMatrixf(offsetmatrix.v);
@@ -1949,15 +1949,15 @@ int main(int argc, char **argv)
 
     setupscreen(1024, 768);
 
-    if(!execfile("keymap.cfg")) fatal("cannot find keymap");
-    if(!execfile("font.cfg")) fatal("cannot find font definitions");
+    if(!execfile("config/keymap.cfg")) fatal("cannot find keymap");
+    if(!execfile("config/font.cfg")) fatal("cannot find font definitions");
     if(!setfont("default")) fatal("no default font specified");
 
     gensphere(12, 6);
 
     camera.origin = Vec3(0, 0, 5);
 
-    execfile("autoexec.cfg");
+    execfile("config/autoexec.cfg");
 
     for(;;)
     {
@@ -1987,7 +1987,7 @@ int main(int argc, char **argv)
         if(invmvp.invert(mvp))
         {
             campos = invmvp.transform3(Vec3(cursormode ? 2*curx-1 : 0, cursormode ? 2*cury-1 : 0, -1));
-            camdir = (invmvp.transform3(Vec3(cursormode ? 2*curx-1 : 0, cursormode ? 2*cury-1 : 0, 1)) - campos).normalize(); 
+            camdir = (invmvp.transform3(Vec3(cursormode ? 2*curx-1 : 0, cursormode ? 2*cury-1 : 0, 1)) - campos).normalize();
             camscale = 1.0f/camdir.dot(Vec3(radians(camera.yaw), radians(camera.pitch)));
         }
 
@@ -2065,14 +2065,14 @@ int main(int argc, char **argv)
 
         glDisable(GL_CULL_FACE);
         bool selecting = false;
-        if(showtris) loopv(tris) 
+        if(showtris) loopv(tris)
         {
             Tri &t = tris[i];
             if(hovertype==SEL_TRI && hoveridx==i)
             {
                 glColor3f(1, 0, 0);
                 selecting = true;
-            } 
+            }
             else if(checkselected(i, SEL_TRI)) glColor3f(1, 1, 1);
             else glColor3f(0.5f, 0.5f, 0);
             t.render();
@@ -2129,7 +2129,7 @@ int main(int argc, char **argv)
                     Vec3 dst(0, 0, 0);
                     int total = 0;
                     loopk(3) if(spheres.inrange(j.spheres[k])) { dst += spheres[j.spheres[k]].pos; total++; }
-                    if(total) 
+                    if(total)
                     {
                         dst /= total;
                         glColor3f(1, 1, 1);
@@ -2151,7 +2151,7 @@ int main(int argc, char **argv)
                 v.curpos = Vec3(0, 0, 0);
                 loopj(4) if(v.weights[j]) v.curpos += joints[v.joints[j]].orient.transform(v.pos)*v.weights[j];
             }
-                
+
             glColor3f(0.5f, 0.5f, 0.5f);
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             glBegin(GL_TRIANGLES);
@@ -2182,7 +2182,7 @@ int main(int argc, char **argv)
             glPopMatrix();
         }
 
-        
+
         enabledepthoffset();
         if(showconstraints) loopv(constraints) constraints[i]->render();
         disabledepthoffset();
@@ -2238,8 +2238,8 @@ int main(int argc, char **argv)
             glDisable(GL_TEXTURE_2D);
             glDisable(GL_BLEND);
             glDepthMask(GL_TRUE);
-        }    
-        
+        }
+
         if(showjoints && showjnames && joints.size() > 1)
         {
             glDepthMask(GL_FALSE);
@@ -2280,7 +2280,7 @@ int main(int argc, char **argv)
             glScalef(insz, insz, insz);
             rendersphere();
             glPopMatrix();
-            
+
             enabledepthoffset();
             glColor3f(0, 0, 0);
             glBegin(GL_TRIANGLE_FAN);
@@ -2306,7 +2306,7 @@ int main(int argc, char **argv)
             glVertex2f(curx+cw, cury+ch);
             glVertex2f(curx+cw, cury-ch);
             glEnd();
-            
+
             glColor3f(0, 0.75f, 0.75f);
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
             glBegin(GL_QUADS);
