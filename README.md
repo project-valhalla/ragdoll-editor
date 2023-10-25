@@ -5,7 +5,7 @@ Given the abstruse nature of the editor, the primary objective of this fork is t
 # License
 The source code of this ragdoll editor is licensed under the [permissive zlib license](./LICENSE.md).
 The editor's default setup includes an example scene: the `example/mrfixit.md5mesh` model (preconfigured in a basic way in the editor) is subject to a different license compared to the one chosen for the source code.
-For additional information regarding this matter, please refer to the `example/mrfixit_readme` file.
+For additional information regarding this matter, please refer to the model's [readme file](./example/mrfixit_readme.txt).
 
 # Basic commands
 | Key                  | Action                 |
