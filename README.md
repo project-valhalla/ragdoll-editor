@@ -25,6 +25,7 @@ For additional information regarding this matter, please refer to the model's [r
 | F6                   | toggle triangle visibility
 | F7                   | toggle joint visibility
 | F8                   | toggle model visibility
+| J                    | bind selected joints, spheres and triangles together
 | Left mouse button    | click to select a sphere or triangle
 | Left shift           | sprint (hold to increase fly speed)
 | Middle mouse button  | click/hold to drag a sphere
