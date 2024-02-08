@@ -10,28 +10,30 @@ For additional information regarding this matter, please refer to the model's [r
 # Basic commands
 | Key                  | Action                 |
 | ---------------------|------------------------|
-| WASD/mouse           | move/strafe/mouse-look
-| Q                    | up
-| E                    | down
+| -                    | quicksave scene
+| 1-9                  | tie 2 triangles together by a rotational constraint of 10-90 degrees
+| =                    | quickload scene
 | BACKQUOTE            | command line
+| BACKSPACE            | clear scene
+| C                    | toggle free-look mode
+| DELETE               | delete constraint between two selected items
+| E                    | up
 | F1                   | pause/unpause ragdoll simulation
 | F2                   | step ragdoll simulation
+| F3                   | invert immovability on all spheres
 | F5                   | toggle sphere visibility
 | F6                   | toggle triangle visibility
 | F7                   | toggle joint visibility
 | F8                   | toggle model visibility
-| C                    | toggle free-fly mode
-| left mouse button    | click to select a sphere or triangle
-| middle mouse button  | click/hold to drag a sphere
-| right mouse button   | cancel selctions
-| scroll wheel         | push selection cursor forward/back
-| SPACE                | spawn a sphere
-| BACKSPACE            | clear scene
-| DELETE               | delete constraint between two selected items
-| T                    | tie 2 or more selected spheres together with a distance constraint
-| Y                    | make a triangle out of 3 spheres together
+| Left mouse button    | click to select a sphere or triangle
+| Left shift           | sprint (hold to increase fly speed)
+| Middle mouse button  | click/hold to drag a sphere
+| Mouse                | mouse-look (requires free-look to be enabled)
 | N                    | toggle immovability on selected spheres
-| F3                   | invert immovability on all spheres
-| 1-9                  | tie 2 triangles together by a rotational constraint of 10-90 degrees
-| -                    | quicksave scene
-| =                    | quickload scene
+| Q                    | down
+| Right mouse button   | cancel selections
+| Scroll wheel         | push selection cursor forward/back
+| SPACE                | spawn a sphere
+| T                    | tie 2 or more selected spheres together with a distance constraint
+| WASD/arrow keys      | move/strafe
+| Y                    | make a triangle out of 3 spheres together
